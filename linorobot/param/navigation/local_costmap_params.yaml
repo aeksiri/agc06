@@ -1,0 +1,23 @@
+local_costmap:
+  #Set the global and robot frames for the costmap
+  global_frame: map
+  robot_base_frame: base_footprint
+
+  #Set the update and publish frequency of the costmap
+  update_frequency: 5.0
+  publish_frequency: 2.0
+
+  #We'll configure this costmap to be a rolling window...
+  #meanning it is always centered at the robot
+  static_map: false  
+  rolling_window: true #is used to keep the costmap centered on the robot
+  width: 6.0
+  height: 6.0
+  resolution: 0.05
+  origin_x: 0.0
+  origin_y: 0.0
+  transform_tolerance: 0.5 #maximum latency for the transforms [second]
+  planner_frequency: 1.0 #planning loop in Hz
+  planner_patiente: 5.0 #how long the planner will wait in seconds in an attempt to find a valid plan, before space-clearing operations are performed.
+  
+  

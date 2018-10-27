@@ -1,0 +1,9 @@
+<launch>
+    
+    <!-- Run laser merge -->
+    <include file="$(find ira_laser_tools)/launch/laserscan_multi_merger.launch" />
+
+    <!-- Run denso_agc03 navigate.launch -->
+    <include file="$(find linorobot)/launch/rviz_navigate.launch" />
+
+</launch>

@@ -1,0 +1,125 @@
+plugins: 
+  - {name: static, type: "costmap_2d::StaticLayer"}
+
+  - {name: costmap_prohibition_layer, type: "costmap_prohibition_layer_namespace::CostmapProhibitionLayer"}
+
+  - {name: obstacles_1, type: "costmap_2d::ObstacleLayer"}
+
+  - {name: obstacles_2, type: "costmap_2d::ObstacleLayer"}
+
+  - {name: inflation, type: "costmap_2d::InflationLayer"}
+
+  #- {name: socialprox, type: "social_navigation_layers::ProxemicLayer"}
+
+publish_frequency: 1.0
+
+obstacles_1:
+  #If the robot detects an obstacle closer than "obstacle_range", it will put
+  #the obstacle in the costmap.
+  obstacle_range: 1.0
+
+  #"raytrace_range" is used to clean/clear the costmap and update the free space
+  #in the costmap when the robot moves. 
+  raytrace_range: 3.5
+
+  #"footprint" is used to indicate the geometry of the robot to the navigation stack.
+  #It is used to keep the right distance between the obstacles and the robot,
+  #or to find out if the robot can go through a door.
+  #footprint: [[-0.105, -0.105], [-0.105, 0.105], [0.041, 0.105], [0.041, -0.105]]
+  #footprint: [[0.5, -0.215], [0.45, -0.265], [-0.215, -0.265], [-0.215, 0.265], [0.45, 0.265], [0.5, 0.215]]
+  footprint: [[0.85, 0.35], [0.85, -0.35], [0.75, -0.45], [-0.55, -0.45], [-0.55, 0.45], [0.75, 0.45]]
+  #robot_radius: 1.0
+
+  #"inflation_radius" is the value given to keep a minimal distance between
+  #the geometry (footprint) of the robot and the obstacles.
+  #Set this factor to be bigger than robot radius.
+  inflation_radius: 1.2
+
+  #"cost_scaling_factor" modifies the behavior of the robot around the obstacles.
+  #You can make a behavior aggressive or conservative by changing the parameter.
+  #Set this factor to be smaller in order to far from obstacles.
+  cost_scaling_factor: 10.0
+
+
+  map_type: costmap
+
+  #"observation_sources" you can set the sensors used by the navigation stack to get the data
+  #from the real world and calculate the path.
+  observation_sources: scan
+  #"scan" is used to add and clear obstacles in the costmap.
+  scan: {sensor_frame: laser_front, expected_update: 0.4, observation_persistence: 0.0, max_obstacle_height: 2.0, min_obstacle_height: 0.0, data_type: LaserScan, topic: scan, marking: true, clearing: true}
+# scan: {data_type: LaserScan, topic: scan, marking: true, clearing: true}
+
+obstacles_2:
+  #If the robot detects an obstacle closer than "obstacle_range", it will put
+  #the obstacle in the costmap.
+  obstacle_range: 1.0
+
+  #"raytrace_range" is used to clean/clear the costmap and update the free space
+  #in the costmap when the robot moves. 
+  raytrace_range: 3.5
+
+  #"footprint" is used to indicate the geometry of the robot to the navigation stack.
+  #It is used to keep the right distance between the obstacles and the robot,
+  #or to find out if the robot can go through a door.
+  #footprint: [[-0.105, -0.105], [-0.105, 0.105], [0.041, 0.105], [0.041, -0.105]]
+  #footprint: [[0.5, -0.215], [0.45, -0.265], [-0.215, -0.265], [-0.215, 0.265], [0.45, 0.265], [0.5, 0.215]]
+  footprint: [[0.85, 0.35], [0.85, -0.35], [0.75, -0.45], [-0.55, -0.45], [-0.55, 0.45], [0.75, 0.45]]
+  #robot_radius: 1.0
+
+  #"inflation_radius" is the value given to keep a minimal distance between
+  #the geometry (footprint) of the robot and the obstacles.
+  #Set this factor to be bigger than robot radius.
+  inflation_radius: 1.2
+
+  #"cost_scaling_factor" modifies the behavior of the robot around the obstacles.
+  #You can make a behavior aggressive or conservative by changing the parameter.
+  #Set this factor to be smaller in order to far from obstacles.
+  cost_scaling_factor: 10.0
+
+
+  map_type: costmap
+
+  #"observation_sources" you can set the sensors used by the navigation stack to get the data
+  #from the real world and calculate the path.
+  observation_sources: scan2
+  #"scan" is used to add and clear obstacles in the costmap.
+  scan2: {sensor_frame: laser_rear, expected_update: 0.4, observation_persistence: 0.0, max_obstacle_height: 2.0, min_obstacle_height: 0.0, data_type: LaserScan, topic: scan, marking: true, clearing: true}
+# scan: {data_type: LaserScan, topic: scan, marking: true, clearing: true}
+
+costmap_prohibition_layer:
+  enabled: true
+  fill_polygons: true
+  prohibition_areas:
+    # your first prohibited area is only a point
+    #- [1.5, -1.5]
+    # now we define a line
+    # it will become the thickness of the costmap resolution
+    #- [[2.5, -2.5],
+    #   [0.0, 0.0]]
+    # and last but not least a polygon with an individual number of points
+    #- [[2.5, -1.8],
+    #   [3.0, -1.8],
+    #   [3.0, -6.0],
+    #   [2.5, -6.0]]
+    - [[3.0, -1.8],
+       [3.0, -6.0]]
+
+inflation:
+  #"inflation_radius" is the value given to keep a minimal distance between
+  #the geometry (footprint) of the robot and the obstacles.
+  #Set this factor to be bigger than robot radius.
+  inflation_radius: 1.2
+
+  #"cost_scaling_factor" modifies the behavior of the robot around the obstacles.
+  #You can make a behavior aggressive or conservative by changing the parameter.
+  #Set this factor to be smaller in order to far from obstacles.
+  cost_scaling_factor: 10.0
+
+#socialprox:
+#  enabled: true
+#  cutoff: 10.0
+#  amplitude: 77.0
+#  covariance: 0.25
+#  factor: 5.0
+#  keep_time: 0.75

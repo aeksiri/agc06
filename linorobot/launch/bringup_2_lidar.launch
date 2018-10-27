@@ -1,0 +1,48 @@
+<launch>
+    <!-- Start ROS communication between the robot's computer and Linorobot base -->
+    <node pkg="rosserial_python" name="denso_agc05_base" type="serial_node.py" output="screen">
+        <param name="port" value="/dev/denso_agc05" />
+        <param name="baud" value="57600" />
+    </node>
+
+    <!-- Start ROS communication between the robot's computer and Mobi_robot I/O -->
+    <node pkg="rosserial_python" name="iocon1" type="serial_node.py" output="screen">
+        <param name="port" value="/dev/iocon1" />
+        <param name="baud" value="115200" />
+    </node>
+    
+    <!-- Start ROS communication between the robot's computer and Roller -->
+    <node pkg="rosserial_python" name="iocon2" type="serial_node.py" output="screen">
+        <param name="port" value="/dev/iocon2" />
+        <param name="baud" value="115200" />
+    </node>
+
+    <!-- IMU Relay and Filter -->
+    <include file="$(find linorobot)/launch/include/imu/imu.launch" />
+
+    <!-- Publish Linorobot odometry -->
+    <node pkg="linorobot" name="base_odom_pub" type="lino_base_node"></node>
+
+    <!-- Publish static transform from base_footprint to base_link -->
+    <node pkg="tf" type="static_transform_publisher" name="base_footprint_to_base_link" args="0 0 0.0705 0 0 0  /base_footprint /base_link  100"/>
+
+    <!-- Publish static transform from base_link to imu_link -->
+    <!-- gyro z=0.24 -->
+    <!--node pkg="tf" type="static_transform_publisher" name="base_link_to_imu_link" args="0.0 0.05 0.05 1.5708 0 0  /base_link /imu_link 100"/-->
+
+    <!-- Publish static transform from base_link to camera_link -->
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_camera_link" args="0.495 0.0 0.12 0 0 0 /base_link /camera_link 100"/>
+
+    <!-- Run Openni_launch openni.launch -->
+    <include file="$(find openni_launch)/launch/openni.launch" />
+
+    <!-- Run rbx2_ar_tags ar_indiv_kinect.launch -->
+    <include file="$(find rbx2_ar_tags)/launch/ar_indiv_kinect.launch" />
+
+    <!-- Run rbx2_ar_tags ar_tag_cog.launch -->
+    <include file="$(find rbx2_ar_tags)/launch/ar_tags_cog.launch" />
+
+    <!-- Run Linorobot compatible laser drivers -->
+    <include file="$(find linorobot)/launch/include/2laser.launch" />
+
+</launch>

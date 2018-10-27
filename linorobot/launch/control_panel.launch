@@ -1,0 +1,6 @@
+<launch>
+    
+    <!-- Run denso_agc03 navigate.launch -->
+    <include file="$(find linorobot)/launch/rviz_navigate.launch" />
+
+</launch>

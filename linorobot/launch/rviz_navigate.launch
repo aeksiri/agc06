@@ -1,0 +1,10 @@
+<launch>
+
+    <!-- Run Linorobot compatible laser drivers -->
+    <include file="$(find linorobot)/launch/navigate.launch" />
+
+    <!-- RViz -->
+    <arg name="rviz_file" default="$(find linorobot)/rviz/navigate.rviz" />
+    <node pkg="rviz" type="rviz" name="$(anon rviz)" args="-d $(arg rviz_file)" output="screen" />
+
+</launch>

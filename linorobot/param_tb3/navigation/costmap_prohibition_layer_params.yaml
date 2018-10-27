@@ -1,0 +1,43 @@
+plugins: 
+  - {name: static,       type: "costmap_2d::StaticLayer"}
+
+  - {name: costmap_prohibition_layer,       type: "costmap_prohibition_layer_namespace::CostmapProhibitionLayer"}
+
+  - {name: obstacles,        type: "costmap_2d::ObstacleLayer"}
+
+
+
+  - {name: inflation,        type: "costmap_2d::InflationLayer"}
+
+publish_frequency: 1.0
+
+obstacles:
+  obstacle_range: 3.0
+  raytrace_range: 3.5
+
+  footprint: [[-0.105, -0.105], [-0.105, 0.105], [0.041, 0.105], [0.041, -0.105]]
+# robot_radius: 0.105
+
+  inflation_radius: 1.0
+  cost_scaling_factor: 3.0
+
+  map_type: costmap
+
+  observation_sources: scan
+  scan: {sensor_frame: base_scan, data_type: LaserScan, topic: scan, marking: true, clearing: true}
+
+costmap_prohibition_layer:
+  enabled: true
+  fill_polygons: true
+  prohibition_areas:
+    # your first prohibited area is only a point
+    - [1.5, -1.5]
+    # now we define a line
+    # it will become the thickness of the costmap resolution
+    - [[2.5, -2.5],
+       [0.0, 0.0]]
+    # and last but not least a polygon with an individual number of points
+    - [[0.0, 2.5],
+       [2.5, 2.5],
+       [2.5, 0.0]]
+

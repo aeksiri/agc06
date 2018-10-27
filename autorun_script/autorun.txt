@@ -1,0 +1,29 @@
+Step 1: Write a script which contains ros commands like roslaunch, roscore, etc.The script would
+look somewhat like this:
+#! /bin/bash
+source /opt/ros/kinetic/setup.bash
+roslaunch hokuyo_node hokuyo_test.launch
+
+Note the second line source /opt/ros/kinetic/setup.bash this is the path of ros bash. We need to
+source ros setup in our script before we use any of the ros commands.
+
+Step 2: Make the script executable by using command
+sudo chmod +x /path/to/script.sh
+
+Step 3: Go to System -->Preferences --> Startup Application
+
+Step 4: click on add application or add tab, a window would popup. Add name say "rosnome"
+
+Step 5: On the given window in the command tab type
+gnome-terminal -x /path/to/script.sh
+
+Step 6: type whatever you want on the comment space or leave blank and click add
+
+Step 7: On the terminal Edit -->profile preferences-->title and command tab select when command
+exits hold the terminal open
+
+Step 8: reboot system and your application would auto start on boot every time.
+
+Note: It is not possible or rather a bit difficult job to open multiple terminals from a single script so
+it is recommended to use a single ros launch file for the entire robot which would include
+everything.

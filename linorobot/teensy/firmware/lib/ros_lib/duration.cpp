@@ -32,37 +32,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "ros/time.h"
+#include <math.h>
+#include "ros/duration.h"
 
 namespace ros
 {
-  void normalizeSecNSec(uint32_t& sec, uint32_t& nsec){
-    uint32_t nsec_part= nsec % 1000000000UL;
-    uint32_t sec_part = nsec / 1000000000UL;
-    sec += sec_part;
+  void normalizeSecNSecSigned(int32_t &sec, int32_t &nsec)
+  {
+    int32_t nsec_part = nsec;
+    int32_t sec_part = sec;
+
+    while (nsec_part > 1000000000L)
+    {
+      nsec_part -= 1000000000L;
+      ++sec_part;
+    }
+    while (nsec_part < 0)
+    {
+      nsec_part += 1000000000L;
+      --sec_part;
+    }
+    sec = sec_part;
     nsec = nsec_part;
   }
 
-  Time& Time::fromNSec(int32_t t)
-  {
-    sec = t / 1000000000;
-    nsec = t % 1000000000;
-    normalizeSecNSec(sec, nsec);
-    return *this;
-  }
-
-  Time& Time::operator +=(const Duration &rhs)
+  Duration& Duration::operator+=(const Duration &rhs)
   {
     sec += rhs.sec;
     nsec += rhs.nsec;
-    normalizeSecNSec(sec, nsec);
+    normalizeSecNSecSigned(sec, nsec);
     return *this;
   }
 
-  Time& Time::operator -=(const Duration &rhs){
+  Duration& Duration::operator-=(const Duration &rhs){
     sec += -rhs.sec;
     nsec += -rhs.nsec;
-    normalizeSecNSec(sec, nsec);
+    normalizeSecNSecSigned(sec, nsec);
     return *this;
   }
+
+  Duration& Duration::operator*=(double scale){
+    sec *= scale;
+    nsec *= scale;
+    normalizeSecNSecSigned(sec, nsec);
+    return *this;
+  }
+
 }

@@ -32,37 +32,54 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "ros/time.h"
+
+ //
+ // #ifndef _ROS_H_
+ // #define _ROS_H_
+ //
+ // #include "ros/node_handle.h"
+ // #include "ArduinoHardware.h"
+ //
+ // namespace ros
+ // {
+ // #if defined(__AVR_ATmega8__) || defined(__AVR_ATmega168__)
+ //   /* downsize our buffers */
+ //   typedef NodeHandle_<ArduinoHardware, 6, 6, 150, 150> NodeHandle;
+ //
+ // #elif defined(__AVR_ATmega328P__)
+ //
+ //   typedef NodeHandle_<ArduinoHardware, 25, 25, 280, 280> NodeHandle;
+ //
+ // #else
+ //
+ //   typedef NodeHandle_<ArduinoHardware> NodeHandle;
+ //
+ // #endif
+ // }
+ //
+ // #endif
+
+#ifndef _ROS_H_
+#define _ROS_H_
+
+#include "ros/node_handle.h"
+#include "ArduinoHardware.h"
 
 namespace ros
 {
-  void normalizeSecNSec(uint32_t& sec, uint32_t& nsec){
-    uint32_t nsec_part= nsec % 1000000000UL;
-    uint32_t sec_part = nsec / 1000000000UL;
-    sec += sec_part;
-    nsec = nsec_part;
-  }
+#if defined(__AVR_ATmega8__) || defined(__AVR_ATmega168__)
+  /* downsize our buffers */
+  typedef NodeHandle_<ArduinoHardware, 5, 5, 1024, 1024> NodeHandle;
 
-  Time& Time::fromNSec(int32_t t)
-  {
-    sec = t / 1000000000;
-    nsec = t % 1000000000;
-    normalizeSecNSec(sec, nsec);
-    return *this;
-  }
+#elif defined(__AVR_ATmega328P__)
 
-  Time& Time::operator +=(const Duration &rhs)
-  {
-    sec += rhs.sec;
-    nsec += rhs.nsec;
-    normalizeSecNSec(sec, nsec);
-    return *this;
-  }
+  typedef NodeHandle_<ArduinoHardware, 5, 5, 1024, 1024> NodeHandle;
 
-  Time& Time::operator -=(const Duration &rhs){
-    sec += -rhs.sec;
-    nsec += -rhs.nsec;
-    normalizeSecNSec(sec, nsec);
-    return *this;
-  }
+#else
+
+typedef NodeHandle_<ArduinoHardware, 5, 5, 1024, 1024> NodeHandle;
+
+#endif
 }
+
+#endif
